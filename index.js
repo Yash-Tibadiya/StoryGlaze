@@ -13,7 +13,7 @@ const userRoute = require("./routes/user");
 const blogRoute = require("./routes/blog");
 
 const app = express();
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 8000;
 const DB_URI = process.env.DB_URI;
 
 //! Database
@@ -29,7 +29,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(checkForAuthenticationCookie("token"));
 app.use("/public", express.static(path.join(__dirname, "public")));
-
 
 //! Routes
 app.get("/", async (req, res) => {
