@@ -4,11 +4,16 @@ const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 require("dotenv").config();
 
-const { checkForAuthenticationCookie } = require("./middlewares/authentication");
+const Blog = require("./models/blog");
+
+const {
+  checkForAuthenticationCookie,
+} = require("./middlewares/authentication");
 const userRoute = require("./routes/user");
+const blogRoute = require("./routes/blog");
 
 const app = express();
-const PORT = 8000;
+const PORT = process.env.PORT;
 const DB_URI = process.env.DB_URI;
 
 //! Database
@@ -23,13 +28,16 @@ app.set("views", path.resolve("./views"));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(checkForAuthenticationCookie("token"));
+app.use(express.static(path.resolve("./public")));
 
 //! Routes
-app.get("/", (req, res) => {
-  res.render("home", { user: req.user });
+app.get("/", async (req, res) => {
+  const allBolg = await Blog.find({}).sort({ createdAt: -1 });
+  res.render("home", { user: req.user, blogs: allBolg });
 });
 
 app.use("/user", userRoute);
+app.use("/blog", blogRoute);
 
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}!`);
