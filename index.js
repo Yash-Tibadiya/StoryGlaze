@@ -1,9 +1,10 @@
 const path = require("path");
 const express = require("express");
 const mongoose = require("mongoose");
-
+const cookieParser = require("cookie-parser");
 require("dotenv").config();
 
+const { checkForAuthenticationCookie } = require("./middlewares/authentication");
 const userRoute = require("./routes/user");
 
 const app = express();
@@ -20,10 +21,12 @@ mongoose
 app.set("view engine", "ejs");
 app.set("views", path.resolve("./views"));
 app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(checkForAuthenticationCookie("token"));
 
 //! Routes
 app.get("/", (req, res) => {
-  res.render("home");
+  res.render("home", { user: req.user });
 });
 
 app.use("/user", userRoute);
