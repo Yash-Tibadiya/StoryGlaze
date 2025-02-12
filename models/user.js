@@ -22,7 +22,7 @@ const userSchema = new Schema(
     },
     profileImageURL: {
       type: String,
-      default: "/public/images/default.png",
+      default: "/images/default.png",
     },
     role: {
       type: String,
@@ -51,22 +51,26 @@ userSchema.pre("save", function (next) {
   next();
 });
 
-userSchema.static("matchPasswordAndGenerateToken", async function (email, password) {
-  const user = await this.findOne({ email });
-  if (!user) throw new Error("User not found");
+userSchema.static(
+  "matchPasswordAndGenerateToken",
+  async function (email, password) {
+    const user = await this.findOne({ email });
+    if (!user) throw new Error("User not found");
 
-  const salt = user.salt;
-  const hashedPassword = user.password;
+    const salt = user.salt;
+    const hashedPassword = user.password;
 
-  const userProvidedHash = createHmac("sha256", salt)
-    .update(password)
-    .digest("hex");
+    const userProvidedHash = createHmac("sha256", salt)
+      .update(password)
+      .digest("hex");
 
-  if (userProvidedHash !== hashedPassword) throw new Error("Invalid password");
+    if (userProvidedHash !== hashedPassword)
+      throw new Error("Invalid password");
 
-  const token = createTokenForUser(user);
-  return token;
-});
+    const token = createTokenForUser(user);
+    return token;
+  }
+);
 
 const User = model("user", userSchema);
 module.exports = User;

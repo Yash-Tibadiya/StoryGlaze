@@ -14,7 +14,7 @@
         <% blogs.forEach((blog)=> { %>
           <div class="col mt-4">
             <div class="card col" style="width: 18rem;">
-              <img src="<%= blog.coverImageURL %>" class="card-img-top" alt="cover image" height="200px">
+              <img src="/public/<%= blog.coverImageURL %>" class="card-img-top" alt="cover image" height="200px">
               <div class="card-body">
                 <h5 class="card-title">
                   <%= blog.title %>
