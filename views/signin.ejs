@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <%- include('./partials/head.ejs') %>
+    <style>
+      body {
+        background-color: #f8f9fa;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .custom-container {
+        max-width: 35%;
+        justify-content: center;
+        align-items: center;
+      }
+    </style>
+    <title>Signin</title>
+</head>
+
+<body>
+  <%- include('./partials/nav.ejs') %>
+    <div class="d-flex justify-content-center align-items-center">
+      <div class="container custom-container">
+        <div class="card shadow-sm justify-content-center mt-5">
+          <div class="card-body">
+            <h3 class="card-title text-center mb-4 fw-bold">Sign Up</h3>
+            <form action="/user/signin" method="post">
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Email address</label>
+                <input name="email" type="email" class="form-control" id="exampleInputEmail1"
+                  aria-describedby="emailHelp">
+                <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+              </div>
+              <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Password</label>
+                <input name="password" type="password" class="form-control" id="exampleInputPassword1">
+              </div>
+              <button type="submit" class="btn btn-primary w-100">Submit</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <%- include('./partials/scripts.js') %>
+</body>
+
+</html>
